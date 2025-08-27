@@ -1,0 +1,30 @@
+{
+ "content": null,
+ "creation": "2025-08-27 19:28:51.567686",
+ "docstatus": 0,
+ "doctype": "Page",
+ "icon": "",
+ "idx": 0,
+ "modified": "2025-08-27 20:25:35.626266",
+ "modified_by": "Administrator",
+ "module": "Nextgenie",
+ "name": "nextgenie",
+ "owner": "Administrator",
+ "page_name": "nextgenie",
+ "roles": [
+  {
+   "role": "Administrator"
+  },
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "All"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "NextGenie"
+}
