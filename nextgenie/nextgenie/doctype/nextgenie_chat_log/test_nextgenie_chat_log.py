@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestChatLog(FrappeTestCase):
+class TestNextGenieChatLog(FrappeTestCase):
 	pass
