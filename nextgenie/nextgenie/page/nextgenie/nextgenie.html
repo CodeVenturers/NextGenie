@@ -1,36 +1,85 @@
 <!-- Copyright (c) 2025, Codeventurers and contributors
-For license information, please see license.txt -->
+     For license information, please see license.txt -->
 
 <div class="chat-container">
-    <!-- Sidebar -->
-    <div class="chat-sidebar">
-        <h3>🤖 NextGenie</h3>
-        <p>This is a demo chatbot UI built on Frappe.</p>
-        <ul>
-            <li>⚡ Built with Frappe</li>
-            <li>💬 Static Hardcoded Chat</li>
-            <li>🎨 HugChat Style Layout</li>
-        </ul>
+
+    <!-- ── History Panel ── -->
+    <div class="chat-history">
+        <div class="history-head">
+            <div class="brand-icon">✦</div>
+            <span class="brand-name">NextGenie</span>
+        </div>
+
+        <button class="new-chat-btn" id="new-chat-btn">＋ &nbsp;New Chat</button>
+
+        <p class="hist-section-label">Recent</p>
+        <div class="hist-list" id="hist-list"></div>
+
+        <div class="history-footer">
+            <small>© 2025 CodeVenturers<br>and contributors</small>
+            <div class="ver-badge">v1.0 · Local AI</div>
+        </div>
     </div>
 
-    <!-- Chat Area -->
+    <!-- ── Capabilities Sidebar ── -->
+    <div class="chat-sidebar">
+        <div>
+            <p class="sec-title">HR Modules</p>
+            <ul class="feats">
+                <li><span class="feat-dot"></span>Leave Management</li>
+                <li><span class="feat-dot"></span>Payroll Queries</li>
+                <li><span class="feat-dot"></span>Onboarding</li>
+                <li><span class="feat-dot"></span>Policy Lookup</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <div>
+            <p class="sec-title">Quick Actions</p>
+            <ul class="feats" id="quick-actions">
+                <li data-msg="Apply for leave"><span class="feat-dot"></span>Apply Leave</li>
+                <li data-msg="Check salary slip"><span class="feat-dot"></span>Salary Slip</li>
+                <li data-msg="Check my attendance"><span class="feat-dot"></span>Attendance</li>
+                <li data-msg="HR contact details"><span class="feat-dot"></span>HR Contacts</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-privacy">
+            🔒 Private · Local AI<br>No data leaves server
+        </div>
+    </div>
+
+    <!-- ── Chat Main ── -->
     <div class="chat-main">
-        <div class="chat-messages" id="chat-messages">
-            <div class="bot-message">👋 Hi! I’m NextGenie, how can I help?</div>
-            <div class="user-message">Hello! Just testing UI 😎</div>
+
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="status-dot"></div>
+                <div>
+                    <div class="chat-header-title" id="chat-header-title">NextGenie Assistant</div>
+                    <div class="chat-header-sub">Online · HR Module</div>
+                </div>
+            </div>
+            <div class="chat-header-right">
+                <button class="header-btn" id="clear-btn" title="Clear chat">🗑</button>
+                <button class="header-btn" title="Info">ℹ</button>
+            </div>
         </div>
 
-        <!-- Input Box -->
-        <div class="chat-input">
-            <input type="text" id="chat-input-box" placeholder="Type your message..." />
-            <button id="send-btn" title="Send">
-                ➤
-            </button>
+        <div class="chat-messages" id="chat-messages"></div>
+
+        <div class="chat-input-area">
+            <div class="chat-input-wrapper">
+                <input type="text" id="chat-input-box" placeholder="Ask me anything about HR…" autocomplete="off" />
+                <button id="send-btn" title="Send message">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 21l21-9L2 3v7l15 2-15 2z" />
+                    </svg>
+                </button>
+            </div>
+            <p class="input-hint">Press Enter to send · Powered by local AI</p>
         </div>
 
-        <!-- Footer License -->
-        <div class="chat-footer">
-            <small>© CodeVenturers and contributors</small>
-        </div>
     </div>
 </div>
