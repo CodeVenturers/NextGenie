@@ -153,7 +153,9 @@
 }
 
 .hist-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 9px 10px;
     border-radius: 8px;
     cursor: pointer;
@@ -170,6 +172,34 @@
 .hist-item.active {
     background: var(--ng-gold-dim);
     border-color: rgba(201, 168, 76, 0.2);
+}
+
+.hist-item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.hist-item-delete {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: var(--ng-tm);
+    font-size: 12px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+}
+
+.hist-item:hover .hist-item-delete {
+    opacity: 1;
+}
+
+.hist-item-delete:hover {
+    background: rgba(220, 60, 60, 0.12);
+    color: #d64545;
 }
 
 .hist-item-title {
