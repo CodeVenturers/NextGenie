@@ -44,7 +44,18 @@ def create_session():
 @frappe.whitelist()
 def update_session_title(session_id, title):
     """Rename a session."""
+    _check_session_owner(session_id)
     frappe.db.set_value("Genie Chat Session", session_id, "title", title)
+    frappe.db.commit()
+    return {"status": "ok"}
+
+
+@frappe.whitelist()
+def delete_session(session_id):
+    """Delete a chat session and all its messages."""
+    _check_session_owner(session_id)
+    frappe.db.delete("Genie Chat Message", {"session": session_id})
+    frappe.delete_doc("Genie Chat Session", session_id, ignore_permissions=True)
     frappe.db.commit()
     return {"status": "ok"}
 
@@ -55,6 +66,7 @@ def update_session_title(session_id, title):
 @frappe.whitelist()
 def get_session_messages(session_id):
     """Return all messages for a session."""
+    _check_session_owner(session_id)
     return frappe.get_all(
         "Genie Chat Message",
         filters={"session": session_id},
@@ -66,6 +78,7 @@ def get_session_messages(session_id):
 @frappe.whitelist()
 def add_chat_message(session_id, sender, message):
     """Save a single chat message."""
+    _check_session_owner(session_id)
     doc = frappe.get_doc({
         "doctype": "Genie Chat Message",
         "session": session_id,
@@ -80,6 +93,7 @@ def add_chat_message(session_id, sender, message):
 @frappe.whitelist()
 def clear_session_messages(session_id):
     """Delete all messages in a session."""
+    _check_session_owner(session_id)
     frappe.db.delete("Genie Chat Message", {"session": session_id})
     frappe.db.commit()
     return {"status": "ok"}
@@ -95,6 +109,7 @@ def get_ai_reply(session_id, message):
     Ollama must be running: ollama serve
     Model must be pulled:   ollama pull phi3:mini
     """
+    _check_session_owner(session_id)
 
     # Build conversation history for context
     history = frappe.get_all(
@@ -147,6 +162,16 @@ say so and suggest contacting the HR team directly."""
 
 
 # ── Utils ─────────────────────────────────────────────────────
+
+
+def _check_session_owner(session_id):
+    """Raise PermissionError unless the session belongs to the current user."""
+    owner = frappe.db.get_value("Genie Chat Session", session_id, "owner")
+    if not owner or owner != frappe.session.user:
+        frappe.throw(
+            "You do not have permission to access this chat session.",
+            frappe.PermissionError
+        )
 
 
 def _friendly_date(creation):

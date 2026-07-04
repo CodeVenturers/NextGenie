@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "creation": "2026-07-04 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "anthropic_api_key",
+  "column_break_model",
+  "model",
+  "max_tokens",
+  "section_break_prompt",
+  "system_prompt"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enable AI Assistant"
+  },
+  {
+   "fieldname": "anthropic_api_key",
+   "fieldtype": "Password",
+   "label": "Anthropic API Key",
+   "mandatory_depends_on": "eval:doc.enabled"
+  },
+  {
+   "fieldname": "column_break_model",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "claude-sonnet-5",
+   "fieldname": "model",
+   "fieldtype": "Select",
+   "label": "Model",
+   "options": "claude-opus-4-8\nclaude-sonnet-5\nclaude-haiku-4-5"
+  },
+  {
+   "default": "1024",
+   "fieldname": "max_tokens",
+   "fieldtype": "Int",
+   "label": "Max Output Tokens"
+  },
+  {
+   "fieldname": "section_break_prompt",
+   "fieldtype": "Section Break",
+   "label": "System Prompt"
+  },
+  {
+   "default": "You are NextGenie, a helpful and professional HR assistant.\nYou help employees with leave management, payroll queries, attendance,\nonboarding, company policies, and HR-related questions.\nAlways be polite, concise, and accurate. If you don't know something,\nsay so and suggest contacting the HR team directly.",
+   "fieldname": "system_prompt",
+   "fieldtype": "Small Text",
+   "label": "System Prompt"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-04 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Nextgenie",
+ "name": "Nextgenie Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

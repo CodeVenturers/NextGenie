@@ -15,6 +15,15 @@ frappe.pages['nextgenie'].on_page_load = function (wrapper) {
 		$(wrapper).closest('.page-wrapper').find('.page-head').hide();
 	}, 0);
 
+	// Hide the global Frappe navbar while on this page, restore it elsewhere
+	function toggleNavbar() {
+		var on_nextgenie = frappe.get_route()[0] === 'nextgenie';
+		$('.navbar').closest('.sticky-top').toggle(!on_nextgenie);
+	}
+
+	toggleNavbar();
+	frappe.router.on('change', toggleNavbar);
+
 	page.main.css({ 'padding': '0', 'margin': '0' });
 	$(page.main).addClass('ng-page-main');
 
@@ -44,12 +53,51 @@ frappe.pages['nextgenie'].on_page_load = function (wrapper) {
 				.addClass('hist-item')
 				.toggleClass('active', s.id === activeId);
 
-			$('<div>').addClass('hist-item-title').text(s.title).appendTo($item);
-			$('<div>').addClass('hist-item-date').text(s.date || '').appendTo($item);
+			var $body = $('<div>').addClass('hist-item-body');
+			$('<div>').addClass('hist-item-title').text(s.title).appendTo($body);
+			$('<div>').addClass('hist-item-date').text(s.date || '').appendTo($body);
+			$item.append($body);
 
-			$item.on('click', function () { loadSession(s.id); });
+			var $del = $('<button>')
+				.addClass('hist-item-delete')
+				.attr('title', 'Delete chat')
+				.text('🗑')
+				.on('click', function (e) {
+					e.stopPropagation();
+					deleteSession(s.id);
+				});
+			$item.append($del);
+
+			$body.on('click', function () { loadSession(s.id); });
 			$list.append($item);
 		});
+	}
+
+	// ── Delete session ─────────────────────────────────
+
+	function deleteSession(id) {
+		frappe.confirm(
+			'Delete this chat? This cannot be undone.',
+			function () {
+				frappe.call({
+					method: 'nextgenie.nextgenie.page.nextgenie.nextgenie.delete_session',
+					args: { session_id: id },
+					callback: function () {
+						sessions = sessions.filter(function (x) { return x.id !== id; });
+
+						if (activeId === id) {
+							if (sessions.length) {
+								loadSession(sessions[0].id);
+							} else {
+								createNewSession();
+							}
+						} else {
+							renderHistory();
+						}
+					}
+				});
+			}
+		);
 	}
 
 	// ── Load session messages ─────────────────────────
@@ -227,7 +275,7 @@ frappe.pages['nextgenie'].on_page_load = function (wrapper) {
 	$(document).on('click', '#new-chat-btn', createNewSession);
 
 	$(document).on('click', '#clear-btn', function () {
-		if (confirm('Clear this chat?')) {
+		frappe.confirm('Clear this chat?', function () {
 			frappe.call({
 				method: 'nextgenie.nextgenie.page.nextgenie.nextgenie.clear_session_messages',
 				args: { session_id: activeId },
@@ -236,7 +284,7 @@ frappe.pages['nextgenie'].on_page_load = function (wrapper) {
 					appendMessage('Genie', 'Chat cleared. How can I assist you?');
 				}
 			});
-		}
+		});
 	});
 
 	$(document).on('click', '#quick-actions li', function () {
